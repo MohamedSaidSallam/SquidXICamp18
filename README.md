@@ -1,4 +1,4 @@
-# SquadXICamp18
+# SquadX ICamp18
 Well... First time using github so that's gonna be a learning exp for all of us :)</br>
 Anyway, I will be posting The android app files and arduino(when we work on the final version) here as well as any changes to them.</br>
 
