@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="175dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:screenOrientation="portrait">
 
     <EditText
         android:id="@+id/TextBoxToSend"
@@ -19,9 +20,9 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="@string/TextBoxToSend"
+        android:imeOptions="actionDone"
         android:inputType="text"
         android:singleLine="true"
-        android:imeOptions="actionDone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +87,7 @@
     <ScrollView
         android:id="@+id/CustomButtons"
         android:layout_width="0dp"
-        android:layout_height="231dp"
+        android:layout_height="215dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -108,9 +109,9 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/AddBtnTextBox"
+                android:imeOptions="actionDone"
                 android:inputType="text"
                 android:singleLine="true"
-                android:imeOptions="actionDone"
                 tools:layout_editor_absoluteX="57dp"
                 tools:layout_editor_absoluteY="234dp" />
 
@@ -147,7 +148,7 @@
         app:layout_constraintTop_toBottomOf="@+id/CustomButtons" />
 
     <TextView
-        android:id="@+id/SensorsAvailability"
+        android:id="@+id/SensorValuesTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -155,10 +156,23 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <TextView
+        android:id="@+id/SensorsAvailability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SensorValuesTextView" />
 
     <Button
         android:id="@+id/BluetoothButton"

@@ -2,9 +2,8 @@
     <string name="app_name">Arduino Testing App</string>
     <string name="TextBoxToSend">Type text to send</string>
     <string name="SendTextButton">Send Text</string>
-    <string name="SendLog">SendLog</string>
     <string name="ClearLogBtn">Clear Log</string>
-    <string name="AddBtnTextBox">Function Of The Button</string>
+    <string name="AddBtnTextBox">Function of the new</string>
     <string name="AddBtn">Add Button</string>
-    <string name="BluetoothBtn">Arduino Bluetooth Module</string>
+    <string name="BluetoothBtn">Connect to Arduino(Bluetooth)</string>
 </resources>
