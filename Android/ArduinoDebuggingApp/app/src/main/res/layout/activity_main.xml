@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minHeight="175dp"
-    tools:context=".MainActivity"
-    android:screenOrientation="portrait">
+    tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/TextBoxToSend"
@@ -130,6 +129,22 @@
                 android:background="?android:attr/listDivider"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="326dp" />
+
+            <Button
+                android:id="@+id/SetZeroPos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SetZeroPos"
+                tools:layout_editor_absoluteX="223dp"
+                tools:layout_editor_absoluteY="351dp" />
+
+            <Button
+                android:id="@+id/SendSensorData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="SendSensorData"
+                tools:layout_editor_absoluteX="223dp"
+                tools:layout_editor_absoluteY="351dp" />
         </LinearLayout>
     </ScrollView>
 

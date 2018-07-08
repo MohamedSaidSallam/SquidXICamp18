@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SquidXicamp18</string>
+    <string name="BTBtn">Connect Arduino(Bluetooth)</string>
+    <string name="Switch">Buttons/JoyStick</string>
+    <string name="SensorOff">Touch Input</string>
+    <string name="SensorOn">Sensors Input</string>
+</resources>
