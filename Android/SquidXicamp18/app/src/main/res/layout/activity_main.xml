@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    public SurfaceView
 
     <ImageButton
         android:id="@+id/FLbtn"
@@ -14,11 +13,12 @@
         android:layout_height="91dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:rotation="-135"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
+        android:tag="Disable"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/Fbtn"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
@@ -29,11 +29,12 @@
         android:layout_height="91dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:rotation="-90"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
+        android:tag="Disable"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/FRbtn"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
@@ -44,14 +45,43 @@
         android:layout_height="91dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:background="@android:color/transparent"
         android:rotation="-45"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
+        android:tag="Disable"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/arrow" />
+
+    <ImageButton
+        android:id="@+id/Lbtn"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:rotation="180"
+        android:scaleType="fitCenter"
+        android:tag="Disable"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/Logo"
+        app:layout_constraintTop_toBottomOf="@+id/FLbtn"
+        app:srcCompat="@drawable/arrow" />
+
+    <ImageView
+        android:id="@+id/Logo"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/Rbtn"
+        app:layout_constraintTop_toBottomOf="@+id/Fbtn"
+        app:srcCompat="@color/colorAccent" />
 
     <ImageButton
         android:id="@+id/Rbtn"
@@ -63,39 +93,10 @@
         android:background="@android:color/transparent"
         android:rotation="0"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
+        android:tag="Disable"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/FRbtn"
-        app:srcCompat="@drawable/arrow" />
-
-    <ImageButton
-        android:id="@+id/BRbtn"
-        android:layout_width="91dp"
-        android:layout_height="91dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:rotation="45"
-        android:scaleType="fitCenter"
-        android:tag="Arrows"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Rbtn"
-        app:srcCompat="@drawable/arrow" />
-
-    <ImageButton
-        android:id="@+id/Bbtn"
-        android:layout_width="91dp"
-        android:layout_height="91dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="107dp"
-        android:background="@android:color/transparent"
-        android:rotation="90"
-        android:scaleType="fitCenter"
-        android:tag="Arrows"
-        app:layout_constraintEnd_toStartOf="@+id/BRbtn"
-        app:layout_constraintTop_toBottomOf="@+id/Fbtn"
         app:srcCompat="@drawable/arrow" />
 
     <ImageButton
@@ -108,86 +109,63 @@
         android:background="@android:color/transparent"
         android:rotation="135"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
+        android:tag="Disable"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/Bbtn"
         app:layout_constraintTop_toBottomOf="@+id/Lbtn"
         app:srcCompat="@drawable/arrow" />
 
     <ImageButton
-        android:id="@+id/Lbtn"
+        android:id="@+id/Bbtn"
         android:layout_width="91dp"
         android:layout_height="91dp"
-        android:layout_marginEnd="107dp"
-        android:layout_marginRight="107dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:rotation="180"
+        android:rotation="90"
         android:scaleType="fitCenter"
-        android:tag="Arrows"
-        app:layout_constraintEnd_toStartOf="@+id/Rbtn"
-        app:layout_constraintTop_toBottomOf="@+id/FLbtn"
+        android:tag="Disable"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/BRbtn"
+        app:layout_constraintTop_toBottomOf="@+id/Logo"
+        app:srcCompat="@drawable/arrow" />
+
+    <ImageButton
+        android:id="@+id/BRbtn"
+        android:layout_width="91dp"
+        android:layout_height="91dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:rotation="45"
+        android:scaleType="fitCenter"
+        android:tag="Disable"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Rbtn"
         app:srcCompat="@drawable/arrow" />
 
     <View
-        android:id="@+id/divider"
+        android:id="@+id/VerDivider"
         android:layout_width="2dp"
-        android:layout_height="319dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/Lbtn"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/BtnJoySwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:checked="false"
-        android:text="@string/Switch"
-        app:layout_constraintEnd_toStartOf="@+id/SensorTouchToggleBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ConnectArduinoBT"
-        tools:checked="false" />
-
-    <Button
-        android:id="@+id/ConnectArduinoBT"
-        android:layout_width="260dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/BTBtn"
-        app:layout_constraintEnd_toStartOf="@+id/divider"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ToggleButton
-        android:id="@+id/SensorTouchToggleBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:textOff="@string/SensorOff"
-        android:textOn="@string/SensorOn"
-        app:layout_constraintEnd_toStartOf="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/ConnectArduinoBT" />
-
-    <TextView
-        android:id="@+id/LogTextView"
+        android:id="@+id/TouchSensorSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -195,28 +173,189 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Sensor Data"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/divider"
+        android:checked="false"
+        android:text="@string/TouchSensorSwitch"
+        app:layout_constraintBottom_toTopOf="@+id/ButtonsJoystickToggleBtn"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SensorTouchToggleBtn"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:checked="false" />
+
+    <Button
+        android:id="@+id/ConnectArduinoBT"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/ConnectArduinoBT"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/ButtonsJoystickToggleBtn"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textOff="Send Data/StopSending"
-        tools:layout_editor_absoluteX="28dp"
-        tools:layout_editor_absoluteY="183dp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:checked="true"
+        android:tag="Disable"
+        android:textOff="@string/ButtonsJoystickToggleBtnOff"
+        android:textOn="@string/ButtonsJoystickToggleBtnOn"
+        app:layout_constraintBottom_toTopOf="@+id/SendingStatusToggleBtn"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/DataDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Swith these 2"
-        tools:layout_editor_absoluteX="123dp"
-        tools:layout_editor_absoluteY="107dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/DataDisplay"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/SendingStatusToggleBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:checked="false"
+        android:textOff="@string/SendingStatusToggleBtnOff"
+        android:textOn="@string/SendingStatusToggleBtnOn"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectArduinoBT"
+        app:layout_constraintEnd_toStartOf="@+id/SendTextBtn"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/DataDisplay">
+
+        <TextView
+            android:id="@+id/BatteryLvlText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/BatteryLvlText"
+            tools:layout_editor_absoluteX="84dp"
+            tools:layout_editor_absoluteY="170dp" />
+
+        <ProgressBar
+            android:id="@+id/BatteryLvl"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            tools:layout_editor_absoluteX="118dp"
+            tools:layout_editor_absoluteY="123dp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toTopOf="@+id/TouchSensorSwitch"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.35000002" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:id="@+id/JoystickLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/image_button_bg"
+        android:tag="Disable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/VerDivider"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/SetZeroPos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/SetZeroPos"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/JoystickLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/SendTextBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:tag="Disable"
+        android:text="@string/SendTextBtn"
+        app:layout_constraintBottom_toTopOf="@+id/ConnectArduinoBT"
+        app:layout_constraintEnd_toStartOf="@+id/VerDivider"
+        app:layout_constraintTop_toBottomOf="@+id/ButtonsJoystickToggleBtn" />
 
 </android.support.constraint.ConstraintLayout>

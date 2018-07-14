@@ -1,7 +1,20 @@
 <resources>
     <string name="app_name">SquidXicamp18</string>
-    <string name="BTBtn">Connect Arduino(Bluetooth)</string>
-    <string name="Switch">Buttons/JoyStick</string>
-    <string name="SensorOff">Touch Input</string>
-    <string name="SensorOn">Sensors Input</string>
+    <!-- Main UI -->
+    <string name="DataDisplay">Data Display</string>
+    <string name="BatteryLvlText">Battery Level(WIP)</string>
+    <string name="TouchSensorSwitch">Touch/Sensor Input</string>
+    <string name="ButtonsJoystickToggleBtnOff">Buttons</string>
+    <string name="ButtonsJoystickToggleBtnOn">JoyStick</string>
+    <string name="SendTextBtn">Send Text</string>
+    <string name="SendingStatusToggleBtnOn">Sending Data&#8230;</string>
+    <string name="SendingStatusToggleBtnOff">Not Sending Data</string>
+    <string name="ConnectArduinoBT">Connect Arduino(Bluetooth)</string>
+    <!-- Controls UI -->
+    <string name="SetZeroPos">Set Zero Position (Change my pos)</string>
+    <!-- SendText_Dialog -->
+    <string name="TextViewToSend">Type the text to send</string>
+    <!-- MISC -->
+
+
 </resources>

@@ -6,4 +6,6 @@
     <string name="AddBtnTextBox">Function of the new</string>
     <string name="AddBtn">Add Button</string>
     <string name="BluetoothBtn">Connect to Arduino(Bluetooth)</string>
+    <string name="SetZeroPos">SetZeroPos</string>
+    <string name="SendSensorData">SendSensorData</string>
 </resources>

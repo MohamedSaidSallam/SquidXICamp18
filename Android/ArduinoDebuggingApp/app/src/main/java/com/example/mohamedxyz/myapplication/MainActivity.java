@@ -1,6 +1,5 @@
 package com.example.mohamedxyz.myapplication;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     int SensorDelay = SensorManager.SENSOR_DELAY_NORMAL;//NORMAL or FASTEST
     private float[] ZeroPos = {0, 0, 0};
+    private float[] LastSendRotation = {0, 0};
+    private int DegDiffToSend = 5;
     private boolean SetZeroPosState = false;
     private boolean StartSendingState = false;
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Checks for Sensors Availability
         if(rotationVectorSensor == null) OriExists = false;
-        String TempSensorsAvailability = "Gyroscope/Accelerometer/Ori: " + gyroExists + "/" + AccelExists + "/" + OriExists;
+        final String TempSensorsAvailability = "Gyroscope/Accelerometer/Ori: " + gyroExists + "/" + AccelExists + "/" + OriExists;
         SensorsAvailability.setText(TempSensorsAvailability);
 
         /*gyroscopeSensorListener = new SensorEventListener() {
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         rvListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
+                float[] ToSendRotation = new float[2];
                 float[] rotationMatrix = new float[16];
                 float[] remappedRotationMatrix = new float[16];
                 float[] orientations = new float[3];
@@ -110,9 +112,21 @@ public class MainActivity extends AppCompatActivity {
                     orientations[i] -= ZeroPos[i];
                     orientations[i] = Float.valueOf( df.format( orientations[i] ));//Find a better way
                 }
-                SensorValuesTextView.setText(Arrays.toString(orientations));
-                //if(StartSendingState) BTService.SendText(Float.toString(orientations[0]), false);
-                if(StartSendingState) BTService.SendText(Arrays.toString(orientations), false);
+                if(LastSendRotation[0] + DegDiffToSend < orientations[1] || LastSendRotation[0] - DegDiffToSend > orientations[1]){
+                    ToSendRotation[0] = orientations[1];
+                }else{
+                    ToSendRotation[0] = LastSendRotation[0];
+                }
+                if(LastSendRotation[1] + DegDiffToSend < orientations[2] || LastSendRotation[1] - DegDiffToSend > orientations[2]){
+                    ToSendRotation[1] = orientations[2];
+                }else{
+                    ToSendRotation[1] = LastSendRotation[1];
+                }
+                if(! Arrays.equals(LastSendRotation, ToSendRotation)){
+                    SensorValuesTextView.setText(Arrays.toString(ToSendRotation));
+                    if(StartSendingState) BTService.SendText(Arrays.toString(ToSendRotation), false);
+                }
+                LastSendRotation = ToSendRotation;
             }
 
             @Override

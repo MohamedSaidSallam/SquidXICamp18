@@ -42,7 +42,6 @@ public class BTService extends Activity {
     }*/
 
     public boolean BTinit() {
-
         boolean found=false;
         BluetoothAdapter bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) {
@@ -69,6 +68,7 @@ public class BTService extends Activity {
                 }
             }
         }
+        //if(! found) Toast.makeText(this.activity,"Didn't Connect",Toast.LENGTH_LONG).show(); //Testing this...
         return found;
     }
     public boolean BTconnect() {

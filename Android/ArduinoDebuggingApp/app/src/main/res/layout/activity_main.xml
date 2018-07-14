@@ -134,7 +134,7 @@
                 android:id="@+id/SetZeroPos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SetZeroPos"
+                android:text="@string/SetZeroPos"
                 tools:layout_editor_absoluteX="223dp"
                 tools:layout_editor_absoluteY="351dp" />
 
@@ -142,7 +142,7 @@
                 android:id="@+id/SendSensorData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="SendSensorData"
+                android:text="@string/SendSensorData"
                 tools:layout_editor_absoluteX="223dp"
                 tools:layout_editor_absoluteY="351dp" />
         </LinearLayout>
