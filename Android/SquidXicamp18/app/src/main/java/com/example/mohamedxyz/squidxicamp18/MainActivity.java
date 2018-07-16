@@ -2,14 +2,16 @@ package com.example.mohamedxyz.squidxicamp18;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.provider.ContactsContract;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,11 +35,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 //(STUPID)
-//todo
 //Remove
 
 public class MainActivity extends AppCompatActivity {
-    //Disable spell check
 
     //Main UI
     TextView DataDisplay;
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor rotationVectorSensor;
     private SensorEventListener rvListener;
-    private int SensorDelay = SensorManager.SENSOR_DELAY_NORMAL;//todo: NORMAL or FASTEST
+    private int SensorDelay = SensorManager.SENSOR_DELAY_FASTEST;//NORMAL or FASTEST
     private float[] ZeroPos = {0, 0, 0};
     private float[] LastSendRotation = {0, 0};
     private int DegDiffToSend = 5;
@@ -95,14 +95,14 @@ public class MainActivity extends AppCompatActivity {
         Logo = findViewById(R.id.Logo);
         //Joystick
         JoystickLayout = findViewById(R.id.JoystickLayout);
-        int joystickSize = 750; //todo: Make it dynamic
+        final int joystickSize = 750; //todo: Make it dynamic
         //RV Sensor
-        PackageManager packageManager = getPackageManager();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         SetZeroPos = findViewById(R.id.SetZeroPos);
         //MISC
         layout = findViewById(R.id.ConstraintLayout);
+        final Drawable JoystickBG = ContextCompat.getDrawable(this, R.drawable.image_button_bg);
 
         //Make Arrows Color Change when clicked (STUPID)
         SetOnClickColorFilter(FLbtn);
@@ -131,83 +131,75 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 JoystickController.drawStick(arg1);
                 if(arg1.getAction() == MotionEvent.ACTION_DOWN || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                    DataDisplay.setText(String.valueOf(String.valueOf("X : " + JoystickController.getX() + ",Y : " + JoystickController.getY())));
-                    if(SendingStatus) BTService.SendText(JoystickController.getX()+" "+JoystickController.getY(), false);
+                    String TempS = String.valueOf(
+                            (LimitRange(JoystickController.getY() * -255 / (joystickSize/2), -255, 255))) +","
+                            +String.valueOf(LimitRange(JoystickController.getX() * 255 / (joystickSize/2),-255 , 255));
+                    DataDisplay.setText(TempS);
+                    if(SendingStatus) BTService.SendText(TempS);
                     //todo: Check max value
                 } else if(arg1.getAction() == MotionEvent.ACTION_UP) {
                     DataDisplay.setText(R.string.DataDisplay);
-                    if(SendingStatus) BTService.SendText("Stop", false);
+                    if(SendingStatus) BTService.SendText("0,0");
                 }
                 return true;
             }
         });
 
         //Initializing RV Sensor
-        //todo: Check if it's avaliable
-        rvListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent sensorEvent) {
-                float[] ToSendRotation = new float[2];
-                float[] rotationMatrix = new float[16];
-                float[] remappedRotationMatrix = new float[16];
-                float[] orientations = new float[3];
-                SensorManager.getRotationMatrixFromVector(rotationMatrix, sensorEvent.values);
-                SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Z, remappedRotationMatrix);
-                SensorManager.getOrientation(remappedRotationMatrix, orientations);
-                DecimalFormat df = new DecimalFormat("#.##");
-                df.setRoundingMode(RoundingMode.CEILING);
-                for(int i = 0; i < 3; i++) {
-                    orientations[i] =  (float)(Math.toDegrees(orientations[i]));//Find a better way
-                }
-                if(SetZeroPosState){
-                    System.arraycopy(orientations, 0, ZeroPos, 0, 3);
-                    SetZeroPosState = false;
-                }
-                for(int i = 0; i < 3; i++) {
-                    orientations[i] -= ZeroPos[i];
-                    orientations[i] = Float.valueOf( df.format( orientations[i] ));//Find a better way
-                }
-                if(LastSendRotation[0] + DegDiffToSend < orientations[1] || LastSendRotation[0] - DegDiffToSend > orientations[1]){
-                    ToSendRotation[0] = orientations[1];
-                }else{
-                    ToSendRotation[0] = LastSendRotation[0];
-                }
-                if(LastSendRotation[1] + DegDiffToSend < orientations[2] || LastSendRotation[1] - DegDiffToSend > orientations[2]){
-                    ToSendRotation[1] = orientations[2];
-                }else{
-                    ToSendRotation[1] = LastSendRotation[1];
-                }
-                if(! Arrays.equals(LastSendRotation, ToSendRotation)){
-                    DataDisplay.setText(Arrays.toString(ToSendRotation));
-                    if(SendingStatus) if(SendingStatus) BTService.SendText(Arrays.toString(ToSendRotation), false);
-                }
-                LastSendRotation = ToSendRotation;
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int i) {
-            }
-        };
-
-        //todo: Organise Code.
-        /*ArrayList<View> views = GetViewsByTag(layout, "Arrow");
-        for(int i = 0; i < views.size(); i++){
-            final View TempView = views.get(i);
-            TempView.setOnTouchListener(new View.OnTouchListener() {
+        if(rotationVectorSensor == null){
+            ToastMsg("RV Sensor not available");
+            TouchSensorSwitch.setEnabled(false);
+        }else {
+            rvListener = new SensorEventListener() {
                 @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                        TempView.setColorFilter(Color.argb(255, 4, 4, 142));
-                        return true;
+                public void onSensorChanged(SensorEvent sensorEvent) {
+                    float[] ToSendRotation = new float[2];
+                    float[] rotationMatrix = new float[16];
+                    float[] remappedRotationMatrix = new float[16];
+                    float[] orientations = new float[3];
+                    SensorManager.getRotationMatrixFromVector(rotationMatrix, sensorEvent.values);
+                    SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Z, remappedRotationMatrix);
+                    SensorManager.getOrientation(remappedRotationMatrix, orientations);
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    df.setRoundingMode(RoundingMode.CEILING);
+                    for (int i = 0; i < 3; i++) {
+                        orientations[i] = (float) (Math.toDegrees(orientations[i]));//Find a better way
                     }
-                    if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                        TempView.setColorFilter(Color.argb(255, 0, 0, 0));
-                        return true;
+                    if (SetZeroPosState) {
+                        System.arraycopy(orientations, 0, ZeroPos, 0, 3);
+                        SetZeroPosState = false;
                     }
-                    return false;
+                    for (int i = 0; i < 3; i++) {
+                        orientations[i] -= ZeroPos[i];
+                        orientations[i] = Float.valueOf(df.format(orientations[i]));//Find a better way
+                    }
+                    if (LastSendRotation[0] + DegDiffToSend < orientations[1] || LastSendRotation[0] - DegDiffToSend > orientations[1]) {
+                        ToSendRotation[0] = orientations[1];
+                    } else {
+                        ToSendRotation[0] = LastSendRotation[0];
+                    }
+                    if (LastSendRotation[1] + DegDiffToSend < orientations[2] || LastSendRotation[1] - DegDiffToSend > orientations[2]) {
+                        ToSendRotation[1] = orientations[2];
+                    } else {
+                        ToSendRotation[1] = LastSendRotation[1];
+                    }
+                    if (!Arrays.equals(LastSendRotation, ToSendRotation)) {
+                        //String TempS = String.valueOf(ToSendRotation[0]+","+ToSendRotation[1]);
+                        String TempS = String.valueOf(
+                                LimitRange(ToSendRotation[0], -85, 85) *255/85+","+LimitRange(ToSendRotation[1], -60, 60)*255/60);
+                        DataDisplay.setText(TempS);
+                        if (SendingStatus) BTService.SendText(TempS);
+                    }
+                    LastSendRotation = ToSendRotation;
                 }
-            });
-        }*/
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int i) {
+                }
+            };
+        }
+
+        //Main UI
         TouchSensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -219,14 +211,15 @@ public class MainActivity extends AppCompatActivity {
                     sensorManager.registerListener(rvListener,rotationVectorSensor, SensorDelay);
                     ActivateSensor = true;
                     SetZeroPos.setVisibility(View.VISIBLE);
-                    setActivityBackgroundColor(0xff303F9F);//todo: Make it ref values/colors.xml
-                    SetColorFilter(200);//todo: Make it ref values/colors.xml
-                    //todo: Darken joysticklayout
+                    setActivityBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    SetColorFilter(getResources().getColor(R.color.GrayedOut));
+                    JoystickBG.setColorFilter(new PorterDuffColorFilter(getResources().getColor(R.color.GrayedOut), PorterDuff.Mode.MULTIPLY));
                     ToastMsg("Sensor Input Enabled");
                 }else{
                     sensorManager.unregisterListener(rvListener);
                     ActivateSensor = false;
                     SetZeroPos.setVisibility(View.INVISIBLE);
+                    JoystickBG.setColorFilter(new PorterDuffColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.MULTIPLY));
                     setActivityBackgroundColor(0xffffffff);
                     SetColorFilter(0);
                     DataDisplay.setText(R.string.DataDisplay);
@@ -272,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
         SendingStatusToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //todo: Check if connected first
                 if(b){
                     SendingStatus = true;
                     ToastMsg("Sending Data");
@@ -280,19 +272,6 @@ public class MainActivity extends AppCompatActivity {
                     SendingStatus = false;
                     ToastMsg("Stopped Sending Data");
                 }
-            }
-        });
-        ConnectArduinoBT.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ToastMsg("WIP");
-            }
-        });
-        SetZeroPos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SetZeroPosState = true;
-                ToastMsg("Set");
             }
         });
         SendTextBtn.setOnClickListener(new View.OnClickListener() {
@@ -310,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         DataDisplay.setText(editText.getText());
-                        if(SendingStatus) BTService.SendText(editText.getText().toString(), true);
+                        if(SendingStatus) BTService.SendText(editText.getText().toString());
                         dialog.dismiss();
                     }
                 });
@@ -326,6 +305,14 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Connected", Toast.LENGTH_SHORT).show();
                     }
                 }
+            }
+        });
+        //MISC
+        SetZeroPos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SetZeroPosState = true;
+                ToastMsg("Set");
             }
         });
 
@@ -353,15 +340,15 @@ public class MainActivity extends AppCompatActivity {
         return views;
     }
     //THIS IS STUPID!!!! (STUPID)
-    private void SetColorFilter(int a){
-        FLbtn.setColorFilter(Color.argb(a, 255, 255, 255));
-        Fbtn .setColorFilter(Color.argb(a, 255, 255, 255));
-        FRbtn.setColorFilter(Color.argb(a, 255, 255, 255));
-        Rbtn .setColorFilter(Color.argb(a, 255, 255, 255));
-        BRbtn.setColorFilter(Color.argb(a, 255, 255, 255));
-        Bbtn .setColorFilter(Color.argb(a, 255, 255, 255));
-        BLbtn.setColorFilter(Color.argb(a, 255, 255, 255));
-        Lbtn .setColorFilter(Color.argb(a, 255, 255, 255));
+    private void SetColorFilter(int color){
+        FLbtn.setColorFilter(color);
+        Fbtn .setColorFilter(color);
+        FRbtn.setColorFilter(color);
+        Rbtn .setColorFilter(color);
+        BRbtn.setColorFilter(color);
+        Bbtn .setColorFilter(color);
+        BLbtn.setColorFilter(color);
+        Lbtn .setColorFilter(color);
     }
     //THIS IS BEYOND STUPID!!!! (STUPID)
     @SuppressLint("ClickableViewAccessibility")
@@ -370,9 +357,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    imgbtn.setColorFilter(Color.argb(255, 4, 4, 142)); //todo: Make it ref values/colors.xml
+                    imgbtn.setColorFilter(getResources().getColor(R.color.colorAccent));
                     SendSpeedFromName(imgbtn);
                     return true;
+
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) { //might be an else if
                     imgbtn.setColorFilter(Color.argb(255, 0, 0, 0));
@@ -387,54 +375,45 @@ public class MainActivity extends AppCompatActivity {
         String Text = v.getResources().getResourceEntryName(v.getId());
         switch (Text) {
             case "FLbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("255,-127");
+                if(SendingStatus) BTService.SendText("255,-127");
                 break;
             case "Fbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("255,0");
+                if(SendingStatus) BTService.SendText("255,0");
                 break;
             case "FRbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("255,127");
+                if(SendingStatus) BTService.SendText("255,127");
                 break;
             case "Rbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("127,255");
+                if(SendingStatus) BTService.SendText("127,255");
                 break;
             case "BRbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("-255,127");
+                if(SendingStatus) BTService.SendText("-255,127");
                 break;
             case "Bbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("-255,0");
+                if(SendingStatus) BTService.SendText("-255,0");
                 break;
             case "BLbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("-255,-127");
+                if(SendingStatus) BTService.SendText("-255,-127");
                 break;
             case "Lbtn":
-                DataDisplay.setText(Text);
-                if(SendingStatus) BTService.SendText(Text, false);
+                DataDisplay.setText("127,-255");
+                if(SendingStatus) BTService.SendText("127,-255");
                 break;
             case "DataDisplay":
-                DataDisplay.setText("Stopped");
-                if(SendingStatus) BTService.SendText("Stop", false);
+                DataDisplay.setText("0,0");
+                if(SendingStatus) BTService.SendText("0,0");
                 break;
             default:
                 ToastMsg(String.valueOf("SendSpeedFromName: Error(" + Text + ")"));
         }
     }
-    /*private void SendSpeedFromName(String Text){
-        switch (Text) {
-            case "stop":
-                DataDisplay.setText("Stopped");
-                break;
-            default:
-                ToastMsg(String.valueOf("SendSpeedFromName: Error(" + Text + ")"));
-        }
-    }*/
     @Override
     protected void onResume(){
         super.onResume();
@@ -445,5 +424,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(rvListener);
+    }
+    //There's probably a builtin function that does this
+    private float LimitRange(float f, int l1, int l2){
+        if(f > l2){
+            return l2;
+        }else if(f < l1){
+            return l1;
+        }
+        return f;
     }
 }

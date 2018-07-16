@@ -3,5 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#04048e</color>
-    <color name="Disabled">#96ffffff</color>
+    <color name="GrayedOut">#cfcfcf</color>
+
 </resources>

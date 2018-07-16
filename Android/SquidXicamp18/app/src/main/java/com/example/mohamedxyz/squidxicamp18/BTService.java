@@ -19,6 +19,8 @@ import java.util.UUID;
     SendText
 */
 
+//This was edit for better use in this project
+
 public class BTService extends Activity {
 
     final String DEVICE_ADDRESS="00:21:13:00:EA:2C"; //BT module
@@ -95,18 +97,14 @@ public class BTService extends Activity {
 
         return connected;
     }
-    public boolean SendText(String string, boolean ShowToast){
-        if(! SuccConnection) return false;
-        if(string.equals("")) return false;
+    public void SendText(String string){
+        if(! SuccConnection || string.equals("")) return;
         string = string.concat("\n"); //todo: Check if it works without this
         try {
             outputStream.write(string.getBytes());
-            if(ShowToast) Toast.makeText(this.activity, "Text Sent: " + string, Toast.LENGTH_SHORT).show(); //todo: Not rly needed
-            return  true;
         } catch (IOException e) {
             e.printStackTrace(); //WHAT DOES THIS DO ?!?!?!?!
-            Toast.makeText(this.activity, "Error: Couldn't Send text.", Toast.LENGTH_SHORT).show();
-            return  false;
+            Toast.makeText(this.activity, "BTService Error: Couldn't Send text.", Toast.LENGTH_SHORT).show();
         }
     }
 }
