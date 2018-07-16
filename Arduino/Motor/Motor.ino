@@ -33,7 +33,7 @@ void loop(){
         Serial.println(CommandS);
     #endif
     int X = CommandS.substring(0,CommandS.indexOf(",")).toInt();
-    float Y = CommandS.substring(CommandS.indexOf(",")+1).toFloat() /255;
+    float Y = 1 - (CommandS.substring(CommandS.indexOf(",")+1).toFloat() /255);
     
     int E12 = 0;
     int E34 = 0;
