@@ -12,9 +12,10 @@
     <string name="ConnectArduinoBT">Connect Arduino(Bluetooth)</string>
     <!-- Controls UI -->
     <string name="SetZeroPos">Set Zero Position (Change my pos)</string>
+    <string name="SpeedlvlText">Speed: </string>
     <!-- SendText_Dialog -->
     <string name="TextViewToSend">Type the text to send</string>
     <!-- MISC -->
-
+    <string name="DisableTag">Disable</string>
 
 </resources>

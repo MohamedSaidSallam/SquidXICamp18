@@ -11,7 +11,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.ContextCompat; //todo: This might be causing problems
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     //Arrows Controls
     ImageButton FLbtn, Fbtn, FRbtn, Rbtn, BRbtn, Bbtn, BLbtn, Lbtn;
     ImageView Logo;
+    SeekBar Speedlvl;
+    TextView SpeedlvlText;
+    int Speed = 255;
     //Joystick
     RelativeLayout JoystickLayout;
     JoyStickClass JoystickController;
@@ -93,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         BLbtn = findViewById(R.id.BLbtn);
         Lbtn = findViewById(R.id.Lbtn);
         Logo = findViewById(R.id.Logo);
+        Speedlvl = findViewById(R.id.Speedlvl);
+        SpeedlvlText = findViewById(R.id.SpeedlvlText);
         //Joystick
         JoystickLayout = findViewById(R.id.JoystickLayout);
         final int joystickSize = 750; //todo: Make it dynamic
@@ -131,12 +137,13 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 JoystickController.drawStick(arg1);
                 if(arg1.getAction() == MotionEvent.ACTION_DOWN || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                    String TempS = String.valueOf(
-                            (LimitRange(JoystickController.getY() * -255 / (joystickSize/2), -255, 255))) +","
-                            +String.valueOf(LimitRange(JoystickController.getX() * 255 / (joystickSize/2),-255 , 255));
+                    int Y = (int) LimitRange(JoystickController.getY() * -255 / (joystickSize/2), -255, 255);
+                    int X = (int) LimitRange(JoystickController.getX() * 255 / (joystickSize/2),-255 , 255);
+                    if((Y > 0 && Y < 30) || (Y < 0 && Y > -30))   Y = 0;
+                    if((X > 0 && X < 30) || (X < 0 && X > -30)) X = 0;
+                    String TempS = String.valueOf(Y +","+ X);
                     DataDisplay.setText(TempS);
                     if(SendingStatus) BTService.SendText(TempS);
-                    //todo: Check max value
                 } else if(arg1.getAction() == MotionEvent.ACTION_UP) {
                     DataDisplay.setText(R.string.DataDisplay);
                     if(SendingStatus) BTService.SendText("0,0");
@@ -171,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     for (int i = 0; i < 3; i++) {
                         orientations[i] -= ZeroPos[i];
-                        orientations[i] = Float.valueOf(df.format(orientations[i]));//Find a better way
+                        //orientations[i] = Float.valueOf(df.format(orientations[i]));//Find a better way
                     }
                     if (LastSendRotation[0] + DegDiffToSend < orientations[1] || LastSendRotation[0] - DegDiffToSend > orientations[1]) {
                         ToSendRotation[0] = orientations[1];
@@ -186,7 +193,8 @@ public class MainActivity extends AppCompatActivity {
                     if (!Arrays.equals(LastSendRotation, ToSendRotation)) {
                         //String TempS = String.valueOf(ToSendRotation[0]+","+ToSendRotation[1]);
                         String TempS = String.valueOf(
-                                LimitRange(ToSendRotation[0], -85, 85) *255/85+","+LimitRange(ToSendRotation[1], -60, 60)*255/60);
+                                Float.valueOf(df.format(LimitRange(ToSendRotation[0], -85, 85) *255/85))
+                                        +","+ Float.valueOf(df.format(LimitRange(ToSendRotation[1], -60, 60)*255/60)));
                         DataDisplay.setText(TempS);
                         if (SendingStatus) BTService.SendText(TempS);
                     }
@@ -242,6 +250,8 @@ public class MainActivity extends AppCompatActivity {
                     BLbtn.setVisibility(View.INVISIBLE);
                     Lbtn .setVisibility(View.INVISIBLE);
                     Logo .setVisibility(View.INVISIBLE);
+                    Speedlvl .setVisibility(View.INVISIBLE);
+                    SpeedlvlText .setVisibility(View.INVISIBLE);
 
                     JoystickLayout.setVisibility(View.VISIBLE);
 
@@ -256,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
                     BLbtn.setVisibility(View.VISIBLE);
                     Lbtn .setVisibility(View.VISIBLE);
                     Logo .setVisibility(View.VISIBLE);
+                    Speedlvl .setVisibility(View.VISIBLE);
+                    SpeedlvlText .setVisibility(View.VISIBLE);
 
                     JoystickLayout.setVisibility(View.INVISIBLE);
                 }
@@ -313,6 +325,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SetZeroPosState = true;
                 ToastMsg("Set");
+            }
+        });
+        Speedlvl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                //SpeedlvlText.setText(""+ i+ "%");
+                SpeedlvlText.setText(String.valueOf( i + "%"));
+                Speed = 255 * i/100;
+                DataDisplay.setText(String.valueOf(Speed));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
@@ -373,46 +404,54 @@ public class MainActivity extends AppCompatActivity {
     }
     private void SendSpeedFromName(View v){
         String Text = v.getResources().getResourceEntryName(v.getId());
+        int DataToSendX = 0, DataToSendY = 0;
         switch (Text) {
             case "FLbtn":
-                DataDisplay.setText("255,-127");
-                if(SendingStatus) BTService.SendText("255,-127");
+                //255,-127
+                DataToSendX = Speed;
+                DataToSendY = -Speed / 2;
                 break;
             case "Fbtn":
-                DataDisplay.setText("255,0");
-                if(SendingStatus) BTService.SendText("255,0");
+                //255,0
+                DataToSendX = Speed;
                 break;
             case "FRbtn":
-                DataDisplay.setText("255,127");
-                if(SendingStatus) BTService.SendText("255,127");
+                //255,127
+                DataToSendX = Speed;
+                DataToSendY = Speed / 2;
                 break;
             case "Rbtn":
-                DataDisplay.setText("127,255");
-                if(SendingStatus) BTService.SendText("127,255");
+                //127,255
+                DataToSendX = Speed /2;
+                DataToSendY = Speed;
                 break;
             case "BRbtn":
-                DataDisplay.setText("-255,127");
-                if(SendingStatus) BTService.SendText("-255,127");
+                //-255,127
+                DataToSendX = -Speed;
+                DataToSendY = Speed / 2;
                 break;
             case "Bbtn":
-                DataDisplay.setText("-255,0");
-                if(SendingStatus) BTService.SendText("-255,0");
+                //-255,0
+                DataToSendX = -Speed;
                 break;
             case "BLbtn":
-                DataDisplay.setText("-255,-127");
-                if(SendingStatus) BTService.SendText("-255,-127");
+                //-255,-127
+                DataToSendX = -Speed;
+                DataToSendY = -Speed / 2;
                 break;
             case "Lbtn":
-                DataDisplay.setText("127,-255");
-                if(SendingStatus) BTService.SendText("127,-255");
+                //127,-255
+                DataToSendX = Speed / 2;
+                DataToSendY = -Speed;
                 break;
             case "DataDisplay":
-                DataDisplay.setText("0,0");
-                if(SendingStatus) BTService.SendText("0,0");
+                //0,0
                 break;
             default:
                 ToastMsg(String.valueOf("SendSpeedFromName: Error(" + Text + ")"));
         }
+        DataDisplay.setText(String.valueOf(DataToSendX + "," + DataToSendY));
+        if(SendingStatus) BTService.SendText(String.valueOf(DataToSendX + "," + DataToSendY));
     }
     @Override
     protected void onResume(){

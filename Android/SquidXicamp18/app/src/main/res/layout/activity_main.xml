@@ -147,6 +147,33 @@
         app:layout_constraintTop_toBottomOf="@+id/Rbtn"
         app:srcCompat="@drawable/arrow" />
 
+    <SeekBar
+        android:id="@+id/Speedlvl"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginStart="4dp"
+        android:progress="100"
+        android:tag="@string/DisableTag"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/SpeedlvlText" />
+
+    <TextView
+        android:id="@+id/SpeedlvlText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:tag="@string/DisableTag"
+        android:text="100%"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/Lbtn" />
+
     <View
         android:id="@+id/VerDivider"
         android:layout_width="2dp"
@@ -204,7 +231,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:checked="false"
-        android:tag="Disable"
+        android:tag="@string/DisableTag"
         android:textOff="@string/ButtonsJoystickToggleBtnOff"
         android:textOn="@string/ButtonsJoystickToggleBtnOn"
         app:layout_constraintBottom_toTopOf="@+id/SendingStatusToggleBtn"
@@ -310,9 +337,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/image_button_bg"
