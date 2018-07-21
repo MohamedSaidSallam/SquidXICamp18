@@ -7,10 +7,7 @@ const int RightBackward = 13;
 const int Enable12 = 6;
 const int Enable34 = 5;
 
-char Command[10]; //search for a better method.
-
-int MaxX = 85;
-int MaxY = 60;
+char Command[11]; //search for a better method.
 
 void setup(){
 
@@ -26,14 +23,16 @@ void setup(){
  
 void loop(){
   if(Serial.available() > 0){
-    delay(20);
+    delay(20); //is this needed ?
     Serial.readBytes(Command, Serial.available());
     String CommandS = String(Command);
+
     #if defined(DEBUGMODE)
         Serial.println(CommandS);
     #endif
+
     int X = CommandS.substring(0,CommandS.indexOf(",")).toInt();
-    float Y = 1 - (CommandS.substring(CommandS.indexOf(",")+1).toFloat() /255);
+    float Y = CommandS.substring(CommandS.indexOf(",")+1).toFloat()/255;
     
     int E12 = 0;
     int E34 = 0;
@@ -45,22 +44,23 @@ void loop(){
       ChangeDir(0);
     }
     
-    if(Y == 0){
-      E12 = X;
-      E34 = X;
-    }else if(Y > 0){
+    if(Y < 0){
+      Y = 1 + Y;
       E12 = X;
       E34 =(int) X * Y;
     }else{
-      E12 = (int) X * Y * -1;
+      Y = 1 - Y;
+      E12 = (int) X * Y;
       E34 = X;
     }
     analogWrite(Enable12, E12);
     analogWrite(Enable34, E34);
+
     #if defined(DEBUGMODE)
         Serial.println("X: "+ String(X) + " Y: " + String(Y));
         Serial.println("R: "+ String(E12) + "," + String(E34));
     #endif
+
     for(int i = 0; i < 10; i++){
       Command[i] = 0;
     }

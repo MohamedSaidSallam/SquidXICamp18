@@ -137,11 +137,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View arg0, MotionEvent arg1) {
                 JoystickController.drawStick(arg1);
                 if(arg1.getAction() == MotionEvent.ACTION_DOWN || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                    int Y = (int) LimitRange(JoystickController.getY() * -255 / (joystickSize/2), -255, 255);
+                    //This isn't perfect
+                    //int Y = (int) LimitRange(JoystickController.getY() * -255 / (joystickSize/2), -255, 255);
                     int X = (int) LimitRange(JoystickController.getX() * 255 / (joystickSize/2),-255 , 255);
-                    if((Y > 0 && Y < 30) || (Y < 0 && Y > -30))   Y = 0;
+                    //if((Y > 0 && Y < 30) || (Y < 0 && Y > -30)) Y = 0;
                     if((X > 0 && X < 30) || (X < 0 && X > -30)) X = 0;
-                    String TempS = String.valueOf(Y +","+ X);
+
+                    int D = (int) LimitRange(JoystickController.getDistance() * 255 / (joystickSize/2), -255, 255);
+                    if(JoystickController.getAngle() < 180) D *= -1;
+
+                    String TempS = String.valueOf(D +","+ X);
                     DataDisplay.setText(TempS);
                     if(SendingStatus) BTService.SendText(TempS);
                 } else if(arg1.getAction() == MotionEvent.ACTION_UP) {
@@ -421,8 +426,8 @@ public class MainActivity extends AppCompatActivity {
                 DataToSendY = Speed / 2;
                 break;
             case "Rbtn":
-                //127,255
-                DataToSendX = Speed /2;
+                //255,255
+                DataToSendX = Speed;
                 DataToSendY = Speed;
                 break;
             case "BRbtn":
@@ -440,8 +445,8 @@ public class MainActivity extends AppCompatActivity {
                 DataToSendY = -Speed / 2;
                 break;
             case "Lbtn":
-                //127,-255
-                DataToSendX = Speed / 2;
+                //255,-255
+                DataToSendX = Speed;
                 DataToSendY = -Speed;
                 break;
             case "DataDisplay":

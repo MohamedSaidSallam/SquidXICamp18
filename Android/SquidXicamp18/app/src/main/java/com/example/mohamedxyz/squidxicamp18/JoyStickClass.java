@@ -127,6 +127,19 @@ public class JoyStickClass {
 		params.height = height;
 	}
 
+	public float getDistance() {
+		if(distance > min_distance && touch_state) {
+			return distance;
+		}
+		return 0;
+	}
+    public float getAngle() {
+        if(distance > min_distance && touch_state) {
+            return angle;
+        }
+        return 0;
+    }
+
 	private double cal_angle(float x, float y) {
 		if(x >= 0 && y >= 0)
 			return Math.toDegrees(Math.atan(y / x));
