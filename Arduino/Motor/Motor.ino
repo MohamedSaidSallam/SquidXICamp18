@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#define DEBUGMODE 1 //Comment to disable
+//#define DEBUGMODE 1 //Comment to disable
 
 const int Input1 = 7; 
 const int Input2 = 8; 
@@ -8,9 +8,9 @@ const int Input4 = 12;
 const int Enable12 = 5;
 const int Enable34 = 6;
 
-char Command[11]; //search for a better method.
+char Command[11];
 
-int Dir; //Delete me 
+//int Dir; //Delete me 
 
 void setup(){
 
@@ -26,7 +26,7 @@ void setup(){
  
 void loop(){
   if(Serial.available() > 0){
-    delay(20); //is this needed ?
+    delay(20);
     Serial.readBytes(Command, Serial.available());
     String CommandS = String(Command);
 
@@ -42,11 +42,11 @@ void loop(){
 
     if(X < 0){
       ChangeDir(1);
-      Dir = 1;
+      //Dir = 1;
       X *= -1;
     }else{
       ChangeDir(0);
-      Dir = 0;
+      //Dir = 0;
     }
     
     if(Y < 0){
@@ -64,7 +64,7 @@ void loop(){
     #if defined(DEBUGMODE)
         Serial.println("X: "+ String(X) + " Y: " + String(Y));
         Serial.println("R: "+ String(E12) + "," + String(E34));
-        Serial.println("Dir:" + String(Dir));
+        //Serial.println("Dir:" + String(Dir));
     #endif
 
     for(int i = 0; i < 10; i++){
