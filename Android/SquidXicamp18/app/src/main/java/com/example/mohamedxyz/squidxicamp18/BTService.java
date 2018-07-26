@@ -99,7 +99,7 @@ public class BTService extends Activity {
     }
     public void SendText(String string){
         if(! SuccConnection || string.equals("")) return;
-        string = string.concat("\n"); //todo: Check if it works without this
+        //string = string.concat("\n"); //todo: Check if it works without this
         try {
             outputStream.write(string.getBytes());
         } catch (IOException e) {

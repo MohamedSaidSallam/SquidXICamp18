@@ -1,22 +1,25 @@
+#include <Arduino.h>
 #define DEBUGMODE 1 //Comment to disable
 
-const int LeftForward = 7; 
-const int LeftBackward = 8; 
-const int RightForward = 12; 
-const int RightBackward = 13;
-const int Enable12 = 6;
-const int Enable34 = 5;
+const int Input1 = 7; 
+const int Input2 = 8; 
+const int Input3 = 11; 
+const int Input4 = 12;
+const int Enable12 = 5;
+const int Enable34 = 6;
 
 char Command[11]; //search for a better method.
+
+int Dir; //Delete me 
 
 void setup(){
 
   pinMode(Enable12, OUTPUT);
   pinMode(Enable34, OUTPUT);
-  pinMode(LeftForward , OUTPUT);
-  pinMode(LeftBackward , OUTPUT);
-  pinMode(RightForward , OUTPUT);
-  pinMode(RightBackward , OUTPUT);
+  pinMode(Input1 , OUTPUT);
+  pinMode(Input2 , OUTPUT);
+  pinMode(Input3 , OUTPUT);
+  pinMode(Input4 , OUTPUT);
   
   Serial.begin(9600);
 }
@@ -39,9 +42,11 @@ void loop(){
 
     if(X < 0){
       ChangeDir(1);
+      Dir = 1;
       X *= -1;
     }else{
       ChangeDir(0);
+      Dir = 0;
     }
     
     if(Y < 0){
@@ -59,6 +64,7 @@ void loop(){
     #if defined(DEBUGMODE)
         Serial.println("X: "+ String(X) + " Y: " + String(Y));
         Serial.println("R: "+ String(E12) + "," + String(E34));
+        Serial.println("Dir:" + String(Dir));
     #endif
 
     for(int i = 0; i < 10; i++){
@@ -68,8 +74,8 @@ void loop(){
 }
 void ChangeDir(int Dir){
     //0 --> Forward, 1 --> Backward
-    digitalWrite(LeftForward, !Dir);
-    digitalWrite(LeftBackward, Dir);
-    digitalWrite(RightForward, !Dir);
-    digitalWrite(RightBackward, Dir);
+    digitalWrite(Input1, !Dir);
+    digitalWrite(Input2, Dir);
+    digitalWrite(Input3, !Dir);
+    digitalWrite(Input4, Dir);
 }
